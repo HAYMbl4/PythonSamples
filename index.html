@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Form data processing</title>
+
+	<script src="resources/lib/js/jquery-3.2.1.min.js"></script>
+</head>
+
+<body>
+<form id="wishes-form" action="cgi-bin/form.py" method="post">
+	<label for="name-for-wish">Your name: </label>
+	<input id="name-for-wish" type="text" name="name-for-wish">
+
+	<label for="wish">Your wish: </label>
+	<input id="wish" type="text" name="wish">
+
+	<input type="submit">
+</form>
+
+<script>
+	$("#wishes-form").submit(function (e) {
+
+		var url = "cgi-bin/form.py";
+
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#wishes-form").serialize(),
+			success: function (data) {
+				alert(data);
+			}
+		});
+
+		e.preventDefault(); // avoid to execute the actual submit of the form.
+	});
+</script>
+
+</body>
+
+</html>
