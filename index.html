@@ -5,11 +5,14 @@
 	<meta charset="UTF-8">
 	<title>Form data processing</title>
 
-	<script src="resources/lib/js/jquery-3.2.1.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="resources/lib/bootstrap/css/bootstrap.min.css">
+
+	<script src="resources/lib/js/jquery-3.1.1.min.js"></script>
+	<script src="resources/lib/bootstrap/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-<form id="wishes-form" action="cgi-bin/form.py" method="post">
+<form id="wishes-form" method="post">
 	<label for="name-for-wish">Your name: </label>
 	<input id="name-for-wish" type="text" name="name-for-wish">
 
@@ -22,7 +25,7 @@
 <script>
 	$("#wishes-form").submit(function (e) {
 
-		var url = "cgi-bin/form.py";
+		var url = "/cgi-bin/json-form.py";
 
 		$.ajax({
 			type: "POST",
