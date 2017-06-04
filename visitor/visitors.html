@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Visitors</title>
+
+	<link rel="stylesheet" type="text/css" href="../resources/lib/bootstrap/css/bootstrap.min.css">
+
+	<script src="../resources/lib/js/jquery-3.1.1.min.js"></script>
+	<script src="../resources/lib/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+	<table id="visitors-table" class="table">
+		<thead>
+		<tr>
+			<th>Имя</th>
+			<th>Трансфер</th>
+			<th>События</th>
+			<th>Напитки</th>
+			<th>Главное блюдо</th>
+			<th>Доп. инфо</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var url = "/cgi-bin/get-visitors.py";
+
+        $.ajax({
+            type: "get",
+            url: url,
+//            contentType: 'application/json',
+            dataType: "json",
+            success: function (data) {
+                for (var i = 0; i < data.visitors.length; i++) {
+                    addWillGoRow("visitors-table", data.visitors[i]);
+                }
+            }
+        });
+    });
+
+    function addWillGoRow(tableId, obj) {
+        var row =
+            "<tr><td>" + obj.name +
+            "</td><td>" + obj.transfer +
+            "</td><td>" + writeLikeList(obj.events) +
+            "</td><td>" + writeLikeList(obj.drinks) +
+            "</td><td>" + obj.mainMeal +
+            "</td><td>" + obj.note +
+            "</td></tr>";
+
+        $("#" + tableId).append(row);
+    }
+
+    function writeLikeList(items) {
+        var text = "";
+        for (var i = 0; i < items.length; i++) {
+            text += items[i] + "<br/>";
+        }
+        return text;
+    }
+</script>
+
+</body>
+</html>
