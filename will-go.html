@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Will go</title>
+
+	<link rel="stylesheet" type="text/css" href="resources/lib/bootstrap/css/bootstrap.min.css">
+
+	<script src="resources/lib/js/jquery-3.1.1.min.js"></script>
+	<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+	<script src="resources/lib/bootstrap/js/bootstrap.min.js"></script>
+
+	<style type="text/css">
+		#info-form .form-control-warning {
+			background-position: center right 1.5625rem
+		}
+	</style>
+</head>
+
+<body>
+<div class="container">
+	<form id="info-form" method="post">
+		<div class="row justify-content-center">
+			<div class="col-lg-7">
+				<div class="form-group">
+					<label for="name" class="form-control-label">Ваше имя:</label>
+					<input type="text" class="form-control" id="name" name="name" placeholder="Ваше имя">
+				</div>
+
+				<div class="form-group">
+					<label for="transfer" class="form-control-label">Трансфер:</label>
+					<select class="form-control" type="text" id="transfer" name="transfer">
+						<option></option>
+						<option>ст. метро ул. Дыбенко в 10:00</option>
+						<option>ст. метро Садовая в 10:30</option>
+						<option>Своим ходом</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="events" class="form-control-label">События на которые вы придёте:</label>
+					<select multiple class="form-control" id="events" name="events">
+						<option>Выкуп</option>
+						<option>Регистрация в ЗАГС</option>
+						<option>Фото прогулка</option>
+						<option>Прогулка на кораблике</option>
+						<option>Банкет</option>
+					</select>
+					<small class="form-text text-muted">
+						Для выбора нескольких событий зажмите Ctrl и выберите их мышкой
+					</small>
+				</div>
+
+				<div class="form-group">
+					<label for="drinks" class="form-control-label">Предпочитаемые напитки:</label>
+					<select multiple class="form-control" id="drinks" name="drinks">
+						<option>Красное вино</option>
+						<option>Белое вино</option>
+						<option>Шампанское</option>
+						<option>Сидр</option>
+						<option>Водка</option>
+						<option>Виски</option>
+						<option>Коньяк</option>
+					</select>
+					<small class="form-text text-muted">
+						Для выбора нескольких событий зажмите Ctrl и выберите их мышкой
+					</small>
+				</div>
+
+				<div class="form-group">
+					<label for="main-meal" class="form-control-label">Главное блюдо:</label>
+					<select class="form-control" type="text" id="main-meal" name="main-meal">
+						<option></option>
+						<option>Рыба</option>
+						<option>Свинина</option>
+						<option>Говядина</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label for="note" class="form-control-label">Дополнительная информация:</label>
+					<textarea class="form-control" type="text" id="note" rows="3" name="note"></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="row justify-content-center">
+			<div class="col-lg-7 float-right">
+				<button id="one-more-btn" type="submit" class="btn btn-primary" onclick="processOneMore()">
+					+ Один
+				</button>
+				<button id="send-btn" type="submit" class="btn btn-primary" onclick="processSend()">
+					Отправить
+				</button>
+			</div>
+		</div>
+	</form>
+
+	<table id="will-go-table" class="table">
+		<thead>
+		<tr>
+			<th>Имя</th>
+			<th>Трансфер</th>
+			<th>События</th>
+			<th>Напитки</th>
+			<th>Главное блюдо</th>
+			<th>Доп. инфо</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<script>
+
+    const nameElementId = "name";
+    const transferElementId = "transfer";
+    const eventsElementId = "events";
+    const drinksElementId = "drinks";
+    const mainMealElementId = "main-meal";
+    const noteElementId = "note";
+
+    var willGoArray = [];
+
+    $(document).ready(function () {
+        $("#info-form").submit(function (e) {
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+        });
+    });
+
+    function processSend() {
+        if (willGoArray.length !== 0) {
+            saveAndSendWillGoInfo();
+        } else if (!checkWillGoForm()) {
+            var willGoObj = createWillGoObj();
+            willGoArray.push(willGoObj);
+            saveAndSendWillGoInfo();
+            resetWillGoForm("#info-form");
+        }
+        willGoArray = [];
+    }
+
+    function saveAndSendWillGoInfo() {
+        //# sourceURL=somename.js
+        var url = "/cgi-bin/will-go.py";
+
+        $.ajax({
+            type: "post",
+            url: url,
+//            contentType: 'application/json',
+            data: "will-go-array=" + JSON.stringify(willGoArray),
+            dataType: "json",
+            success: function (data) {
+                alert(JSON.stringify(data));
+            }
+        });
+    }
+
+    function processOneMore() {
+        if (!checkWillGoForm()) {
+            var willGoObj = createWillGoObj();
+            willGoArray.push(willGoObj);
+            addWillGoRow("will-go-table", willGoObj);
+            resetWillGoForm("#info-form");
+        }
+    }
+
+    function createWillGoObj() {
+        var willGoObj = {};
+        willGoObj.name = getValue(nameElementId);
+        willGoObj.transfer = getValue(transferElementId);
+        willGoObj.events = getChoseItems(eventsElementId);
+        willGoObj.drinks = getChoseItems(drinksElementId);
+        willGoObj.mainMeal = getValue(mainMealElementId);
+        willGoObj.note = getValue(noteElementId);
+
+        return willGoObj;
+    }
+
+    function checkWillGoForm() {
+        var hasErrors = false;
+
+        if (checkValue(get(nameElementId))) {
+            hasErrors = true;
+        }
+        if (checkValue(get(transferElementId))) {
+            hasErrors = true;
+        }
+        if (checkValue(get(eventsElementId))) {
+            hasErrors = true;
+        }
+        if (checkValue(get(drinksElementId))) {
+            hasErrors = true;
+        }
+        if (checkValue(get(mainMealElementId))) {
+            hasErrors = true;
+        }
+
+        return hasErrors;
+    }
+
+    function addWillGoRow(tableId, obj) {
+        var row =
+            "<tr><td>" + obj.name +
+            "</td><td>" + obj.transfer +
+            "</td><td>" + writeLikeList(obj.events) +
+            "</td><td>" + writeLikeList(obj.drinks) +
+            "</td><td>" + obj.mainMeal +
+            "</td><td>" + obj.note +
+            "</td></tr>";
+
+        $("#" + tableId).append(row);
+    }
+
+    function resetWillGoForm(formId) {
+        $(formId)[0].reset()
+    }
+
+    function checkValue(element) {
+        var value = element.val();
+        var hasError = false;
+
+        if (typeof value === 'string' || value instanceof String) {
+            hasError = checkStringValue(value);
+        } else if (value instanceof Array) {
+            hasError = checkArrayValue(value);
+        }
+
+        toggleWarnIndicator(element, hasError);
+        return hasError;
+    }
+
+    function checkStringValue(value) {
+        return value.trim() === "";
+    }
+
+    function checkArrayValue(value) {
+        return value.length === 0;
+    }
+
+    function toggleWarnIndicator(element, hasWarning) {
+        if (hasWarning) {
+            element.addClass("form-control-warning");
+            element.parent().addClass("has-warning");
+        } else {
+            element.removeClass("form-control-warning");
+            element.parent().removeClass("has-warning");
+        }
+    }
+
+    function writeLikeList(items) {
+        var text = "";
+        for (var i = 0; i < items.length; i++) {
+            text += items[i] + "<br/>";
+        }
+        return text;
+    }
+
+    function getChoseItems(elementId) {
+        var items = [];
+        $("#" + elementId).find(":selected").each(function (i, selected) {
+            items[i] = $(selected).text();
+        });
+        return items;
+    }
+
+    function getValue(elementId) {
+        return get(elementId).val();
+    }
+
+    function get(elementId) {
+        return $("#" + elementId);
+    }
+
+</script>
+</body>
+</html>
