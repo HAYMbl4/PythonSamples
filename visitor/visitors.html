@@ -12,25 +12,95 @@
 
 <body>
 <div class="container">
-	<table id="visitors-table" class="table">
-		<thead>
-		<tr>
-			<th>Имя</th>
-			<th>Трансфер</th>
-			<th>События</th>
-			<th>Напитки</th>
-			<th>Главное блюдо</th>
-			<th>Доп. инфо</th>
-		</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
+	<ul class="nav nav-tabs">
+		<li class="nav-item">
+			<a class="nav-link active" data-toggle="tab" href="#all-visitors">Все гости</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="tab" href="#transfer">Трансфер</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="tab" href="#events">События</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="tab" href="#drinks">Напитки</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="tab" href="#main-meal">Основное блюдо</a>
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane active" id="all-visitors" role="tabpanel">
+			<table id="visitors-table" class="table">
+				<thead>
+				<tr>
+					<th>Имя</th>
+					<th>Трансфер</th>
+					<th>События</th>
+					<th>Напитки</th>
+					<th>Основное блюдо</th>
+					<th>Доп. инфо</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane" id="transfer" role="tabpanel">
+			<table id="transfer-table" class="table">
+				<thead>
+				<tr>
+					<th>Откуда</th>
+					<th>Кол-во</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane" id="events" role="tabpanel">
+			<table id="events-table" class="table">
+				<thead>
+				<tr>
+					<th>Событие</th>
+					<th>Кол-во</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane" id="drinks" role="tabpanel">
+			<table id="drinks-table" class="table">
+				<thead>
+				<tr>
+					<th>Событие</th>
+					<th>Кол-во</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab-pane" id="main-meal" role="tabpanel">
+			<table id="main-meal-table" class="table">
+				<thead>
+				<tr>
+					<th>Основное блюдо</th>
+					<th>Кол-во</th>
+				</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>
 
 <script>
     $(document).ready(function () {
-        var url = "/cgi-bin/get-visitors.py";
+        var url = "/cgi-bin/get-statistic.py";
 
         $.ajax({
             type: "get",
@@ -40,6 +110,18 @@
             success: function (data) {
                 for (var i = 0; i < data.visitors.length; i++) {
                     addWillGoRow("visitors-table", data.visitors[i]);
+                }
+                for (var i = 0; i < data.transferStatistic.length; i++) {
+                    addTransferRow("transfer-table", data.transferStatistic[i])
+                }
+                for (var i = 0; i < data.eventsStatistic.length; i++) {
+                    addTransferRow("events-table", data.eventsStatistic[i])
+                }
+                for (var i = 0; i < data.drinksStatistic.length; i++) {
+                    addTransferRow("drinks-table", data.drinksStatistic[i])
+                }
+                for (var i = 0; i < data.mainMealStatistic.length; i++) {
+                    addTransferRow("main-meal-table", data.mainMealStatistic[i])
                 }
             }
         });
@@ -53,6 +135,15 @@
             "</td><td>" + writeLikeList(obj.drinks) +
             "</td><td>" + obj.mainMeal +
             "</td><td>" + obj.note +
+            "</td></tr>";
+
+        $("#" + tableId).append(row);
+    }
+
+    function addTransferRow(tableId, obj) {
+        var row =
+            "<tr><td>" + obj.position +
+            "</td><td>" + obj.persons.length +
             "</td></tr>";
 
         $("#" + tableId).append(row);
