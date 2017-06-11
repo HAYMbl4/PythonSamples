@@ -1,0 +1,57 @@
+{
+  "visitors": [
+    {
+      "name": "",
+      "willGo": true,
+      "transfer": "",
+      "events": [
+        ""
+      ],
+      "drinks": [
+        ""
+      ],
+      "mainMeal": "",
+      "note": ""
+    }
+  ],
+  "willGoStatistic": [
+    {
+      "position": "",
+      "persons": [
+        ""
+      ]
+    }
+  ],
+  "transferStatistic": [
+    {
+      "position": "",
+      "persons": [
+        ""
+      ]
+    }
+  ],
+  "eventsStatistic": [
+    {
+      "position": "",
+      "persons": [
+        ""
+      ]
+    }
+  ],
+  "drinksStatistic": [
+    {
+      "position": "",
+      "persons": [
+        ""
+      ]
+    }
+  ],
+  "mainMealStatistic": [
+    {
+      "position": "",
+      "persons": [
+        ""
+      ]
+    }
+  ]
+}
