@@ -5,9 +5,15 @@
 	<title>Visitors</title>
 
 	<link rel="stylesheet" type="text/css" href="../resources/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 	<script src="../resources/lib/js/jquery-3.1.1.min.js"></script>
+
+	<script src="../resources/lib/bootstrap/js/tether.min.js"></script>
 	<script src="../resources/lib/bootstrap/js/bootstrap.min.js"></script>
+
+	<script src="js/helper.js"></script>
+	<script src="js/statistic.js"></script>
 </head>
 
 <body>
@@ -32,15 +38,27 @@
 
 	<div class="tab-content">
 		<div class="tab-pane active" id="all-visitors" role="tabpanel">
+			<div class="progress mt-3 mb-3">
+				<div id="will-go-progress" class="progress-bar bg-success" role="progressbar" style="height: 20px;"
+					 aria-valuemin="0" aria-valuemax="100">
+				</div>
+				<div id="wont-go-progress" class="progress-bar bg-danger" role="progressbar" style="height: 20px;"
+					 aria-valuemin="0" aria-valuemax="100">
+				</div>
+				<div id="maybe-go-progress" class="progress-bar bg-info" role="progressbar" style="height: 20px;"
+					 aria-valuemin="0" aria-valuemax="100">
+				</div>
+			</div>
+
 			<table id="visitors-table" class="table">
 				<thead>
 				<tr>
 					<th>Имя</th>
 					<th>Трансфер</th>
 					<th>События</th>
-					<th>Напитки</th>
-					<th>Основное блюдо</th>
-					<th>Доп. инфо</th>
+					<th class="hidden-sm-down">Напитки</th>
+					<th class="hidden-sm-down">Основное блюдо</th>
+					<th class="hidden-sm-down">Доп. инфо</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -53,6 +71,7 @@
 				<tr>
 					<th>Откуда</th>
 					<th>Кол-во</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -65,6 +84,7 @@
 				<tr>
 					<th>Событие</th>
 					<th>Кол-во</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -77,6 +97,7 @@
 				<tr>
 					<th>Событие</th>
 					<th>Кол-во</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -88,7 +109,7 @@
 				<thead>
 				<tr>
 					<th>Основное блюдо</th>
-					<th>Кол-во</th>
+					<th></th>
 				</tr>
 				</thead>
 				<tbody>
@@ -97,66 +118,6 @@
 		</div>
 	</div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        var url = "/cgi-bin/get-statistic.py";
-
-        $.ajax({
-            type: "get",
-            url: url,
-//            contentType: 'application/json',
-            dataType: "json",
-            success: function (data) {
-                for (var i = 0; i < data.visitors.length; i++) {
-                    addWillGoRow("visitors-table", data.visitors[i]);
-                }
-                for (var i = 0; i < data.transferStatistic.length; i++) {
-                    addTransferRow("transfer-table", data.transferStatistic[i])
-                }
-                for (var i = 0; i < data.eventsStatistic.length; i++) {
-                    addTransferRow("events-table", data.eventsStatistic[i])
-                }
-                for (var i = 0; i < data.drinksStatistic.length; i++) {
-                    addTransferRow("drinks-table", data.drinksStatistic[i])
-                }
-                for (var i = 0; i < data.mainMealStatistic.length; i++) {
-                    addTransferRow("main-meal-table", data.mainMealStatistic[i])
-                }
-            }
-        });
-    });
-
-    function addWillGoRow(tableId, obj) {
-        var row =
-            "<tr><td>" + obj.name +
-            "</td><td>" + obj.transfer +
-            "</td><td>" + writeLikeList(obj.events) +
-            "</td><td>" + writeLikeList(obj.drinks) +
-            "</td><td>" + obj.mainMeal +
-            "</td><td>" + obj.note +
-            "</td></tr>";
-
-        $("#" + tableId).append(row);
-    }
-
-    function addTransferRow(tableId, obj) {
-        var row =
-            "<tr><td>" + obj.position +
-            "</td><td>" + obj.persons.length +
-            "</td></tr>";
-
-        $("#" + tableId).append(row);
-    }
-
-    function writeLikeList(items) {
-        var text = "";
-        for (var i = 0; i < items.length; i++) {
-            text += items[i] + "<br/>";
-        }
-        return text;
-    }
-</script>
 
 </body>
 </html>
