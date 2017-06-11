@@ -3,7 +3,7 @@ import cgi
 import json
 
 form = cgi.FieldStorage()
-will_go_array = form.getfirst("will-go-array")
+will_go_array = form.getfirst("visitors")
 new_visitors = json.loads(will_go_array)
 
 with open("visitor/visitors.json", "r") as old_visitors_file:
