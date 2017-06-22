@@ -29,7 +29,15 @@ function saveAndSendWillGoInfo() {
         data: "visitors=" + JSON.stringify(visitors),
         dataType: "json",
         success: function (data) {
-            alert("Данные успешно добавлены");
+            if (toBoolean(data["success"])) {
+                // TODO: проверять на наличие данных, скрывать через 5-10 сек
+                get("will-go-response").text(data["positive_desc"]);
+                get("will-go-response").removeClass("hide");
+                get("wont-go-response").text(data["negative_desc"]);
+                get("wont-go-response").removeClass("hide");
+            } else {
+
+            }
         }
     });
 }

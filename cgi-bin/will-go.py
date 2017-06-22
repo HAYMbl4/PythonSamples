@@ -4,6 +4,7 @@ import json
 from os.path import isfile
 
 from resources.py import backup
+from resources.py import visitor_service
 
 VISITORS_FILE_PATH = "visitor/visitors.json"
 VISITORS_BACKUP_FILE_PATH = "visitor/visitors_backup.json"
@@ -22,14 +23,10 @@ created_backup = backup.create_backup(VISITORS_FILE_PATH, VISITORS_BACKUP_FILE_P
 created_request_backup = backup.create_request_backup(VISITORS_REQUEST_BACK_FILE_PATH, new_visitors)
 
 if has_visitors_file and created_backup and created_request_backup:
-    with open(VISITORS_FILE_PATH, "r") as old_visitors_file:
-        old_visitors = json.load(old_visitors_file)
-
-    with open(VISITORS_FILE_PATH, "w") as new_visitors_file:
-        for v in new_visitors:
-            old_visitors["visitors"].append(v)
-            json.dump(old_visitors, new_visitors_file)
-
-    result = {'success': 'true', 'message': 'The Command Completed Successfully'}
-    print('Content-Type: application/json\n\n')
-    print(json.dumps(old_visitors))
+    try:
+        visitor_service.add_visitors(new_visitors, VISITORS_FILE_PATH)
+        visitor_service.send_success_response(new_visitors)
+    except Exception as e:
+        visitor_service.send_error_responce(e)
+else:
+    visitor_service.send_error_responce("Не удалось сделать резевную копию данных")
