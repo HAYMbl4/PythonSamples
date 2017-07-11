@@ -5,7 +5,7 @@ const visitorsCount = 100;
 
 $(document).ready(function () {
 
-    var url = "/cgi-bin/get-statistic.py";
+    var url = "/cgi-bin/get_statistic.py";
 
     $.ajax({
         type: "get",

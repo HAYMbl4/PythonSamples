@@ -21,7 +21,7 @@ $(document).ready(function () {
 });
 
 function saveAndSendWillGoInfo() {
-    var url = "/cgi-bin/will-go.py";
+    var url = "/cgi-bin/will_go.py";
 
     $.ajax({
         type: "post",
