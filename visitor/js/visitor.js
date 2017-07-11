@@ -30,13 +30,23 @@ function saveAndSendWillGoInfo() {
         dataType: "json",
         success: function (data) {
             if (toBoolean(data["success"])) {
-                // TODO: проверять на наличие данных, скрывать через 5-10 сек
-                get("will-go-response").text(data["positive_desc"]);
-                get("will-go-response").removeClass("hide");
-                get("wont-go-response").text(data["negative_desc"]);
-                get("wont-go-response").removeClass("hide");
+                if (data["positive_desc"] !== null) {
+                    get("will-go-response").text(data["positive_desc"]);
+                    get("will-go-response").removeClass("hide");
+                    setTimeout(function () {
+                        get("will-go-response").addClass("hide");
+                    }, 5000);
+                }
+                if (data["negative_desc"] !== null) {
+                    get("wont-go-response").text(data["negative_desc"]);
+                    get("wont-go-response").removeClass("hide");
+                    setTimeout(function () {
+                        get("wont-go-response").addClass("hide");
+                    }, 5000);
+                }
             } else {
-
+                get("error-response").text("Ошибка при обработке: " + data["exp"]);
+                get("error-response").removeClass("hide");
             }
         }
     });
@@ -64,7 +74,7 @@ function sendVisitors() {
         onToggleWillGo();
     }
     visitors = [];
-    showOrHideTable()
+    showOrHideTable();
 }
 
 function checkWillGoForm() {
@@ -122,6 +132,8 @@ function showOrHideTable() {
 
 function resetWillGoForm(formId) {
     get(formId)[0].reset();
+    get(eventsElementId).multiselect("refresh");
+    get(drinksElementId).multiselect("refresh");
     get(willGoElementId).parent().addClass("active");
     get(wontGoElementId).parent().removeClass("active");
 }

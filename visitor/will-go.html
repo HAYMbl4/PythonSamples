@@ -6,9 +6,16 @@
 
 	<link rel="stylesheet" type="text/css" href="../resources/lib/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="../resources/lib/bootstrap/css/bootstrap-multiselect.css">
+	<!--<link rel="stylesheet" href="../resources/lib/select2/css/select2.min.css">-->
+	<!--<link rel="stylesheet" href="../resources/lib/select2/css/magicsuggest-min.css">-->
 
 	<script src="../resources/lib/js/jquery-3.1.1.min.js"></script>
 	<script src="../resources/lib/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../resources/lib/bootstrap/js/bootstrap-multiselect.js"></script>
+	<script src="../resources/lib/bootstrap/js/bootstrap-multiselect-collapsible-groups.js"></script>
+	<!--<script src="../resources/lib/select2/js/select2.min.js"></script>-->
+	<!--<script src="../resources/lib/select2/js/magicsuggest-min.js"></script>-->
 
 	<script src="js/helper.js"></script>
 	<script src="js/visitor.js"></script>
@@ -28,16 +35,16 @@
 <div class="container">
 	<form id="will-go-form" method="post">
 		<div class="row justify-content-center">
-			<div class="col-lg-7">
+			<div class="col-12">
 				<div class="row">
-					<div class="col-lg-8">
+					<div class="col-sm-12 col-md-8">
 						<div class="form-group">
 							<label for="name" class="form-control-label">Ваше имя:</label>
 							<input type="text" class="form-control" id="name" name="name" placeholder="Ваше имя">
 						</div>
 					</div>
 
-					<div class="col-lg-4" style="padding-top: 31px;">
+					<div class="col-sm-12 col-md-4 text-right" style="padding-top: 31px;">
 						<div id="will-go-buttons" class="btn-group" data-toggle="buttons" onchange="onToggleWillGo()">
 							<label class="btn btn-secondary active">
 								<input type="radio" name="will-go" id="will-go" value="1" autocomplete="off" checked>
@@ -51,105 +58,147 @@
 				</div>
 
 				<div id="will-go-info-panel">
-					<div class="form-group">
-						<label for="transfer" class="form-control-label">Трансфер:</label>
-						<select class="form-control" type="text" id="transfer" name="transfer">
-							<option></option>
-							<option>ст. метро ул. Дыбенко в 10:00</option>
-							<option>ст. метро Садовая в 10:30</option>
-							<option>Своим ходом</option>
-						</select>
+					<div class="row">
+						<div class="col-sm-12 col-md-5">
+							<div class="form-group">
+								<label for="transfer" class="form-control-label">Трансфер:</label>
+								<select class="form-control" type="text" id="transfer" name="transfer">
+									<option></option>
+									<option>ст. метро ул. Дыбенко в 10:00</option>
+									<option>ст. метро Садовая в 10:30</option>
+									<option>Своим ходом</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-12 col-md-7">
+							<div class="form-group">
+
+								<label for="events" class="form-control-label">События:</label>
+								<select multiple="multiple" class="form-control" id="events" name="events">
+									<option>Выкуп</option>
+									<option>Регистрация в ЗАГС</option>
+									<option>Фото прогулка</option>
+									<option>Прогулка на кораблике</option>
+									<option>Банкет</option>
+								</select>
+
+								<script>
+                                    get("events").multiselect({
+                                        nonSelectedText: 'Выбирете события, на которые вы пойдёте',
+                                        includeSelectAllOption: true,
+                                        selectAllText: 'Пойду везде!',
+                                        numberDisplayed: 3,
+                                        nSelectedText: ' - события выбраны',
+                                        allSelectedText: 'Выбраны все события',
+                                        buttonClass: 'btn btn-secondary',
+                                        buttonWidth: '100%',
+                                        templates: {
+                                            li: '<li><a class="dropdown-item" tabindex="0"><label style="padding-left: 10px; width: 100%"></label></a></li>'
+                                        }
+                                    });
+								</script>
+							</div>
+						</div>
 					</div>
 
-					<div class="form-group">
-						<label for="events" class="form-control-label">События на которые вы придёте:</label>
-						<select multiple class="form-control" id="events" name="events">
-							<option>Выкуп</option>
-							<option>Регистрация в ЗАГС</option>
-							<option>Фото прогулка</option>
-							<option>Прогулка на кораблике</option>
-							<option>Банкет</option>
-						</select>
-						<small class="form-text text-muted">
-							Для выбора нескольких событий зажмите Ctrl и выберите их мышкой
-						</small>
-					</div>
+					<div class="row">
+						<div class="col-sm-12 col-md-5">
+							<div class="form-group">
+								<label for="main-meal" class="form-control-label">Главное блюдо:</label>
+								<select class="form-control" type="text" id="main-meal" name="main-meal">
+									<option></option>
+									<option>Рыба</option>
+									<option>Свинина</option>
+									<option>Говядина</option>
+								</select>
+							</div>
+						</div>
 
-					<div class="form-group">
-						<label for="drinks" class="form-control-label">Предпочитаемые напитки:</label>
-						<select multiple class="form-control" id="drinks" name="drinks">
-							<option>Красное вино</option>
-							<option>Белое вино</option>
-							<option>Шампанское</option>
-							<option>Сидр</option>
-							<option>Водка</option>
-							<option>Виски</option>
-							<option>Коньяк</option>
-						</select>
-						<small class="form-text text-muted">
-							Для выбора нескольких событий зажмите Ctrl и выберите их мышкой
-						</small>
-					</div>
+						<div class="col-sm-12 col-md-7">
+							<div class="form-group">
+								<label for="drinks" class="form-control-label">Напитки:</label>
+								<select multiple class="form-control" id="drinks" name="drinks">
+									<option>Красное вино</option>
+									<option>Белое вино</option>
+									<option>Шампанское</option>
+									<option>Сидр</option>
+									<option>Водка</option>
+									<option>Виски</option>
+									<option>Коньяк</option>
+								</select>
 
-					<div class="form-group">
-						<label for="main-meal" class="form-control-label">Главное блюдо:</label>
-						<select class="form-control" type="text" id="main-meal" name="main-meal">
-							<option></option>
-							<option>Рыба</option>
-							<option>Свинина</option>
-							<option>Говядина</option>
-						</select>
-					</div>
-
-					<div class="form-group">
-						<label for="note" class="form-control-label">Дополнительная информация:</label>
-						<textarea class="form-control" type="text" id="note" rows="3" name="note"></textarea>
+								<script>
+                                    get("drinks").multiselect({
+                                        nonSelectedText: 'Выбирете предпочитаемые напитки',
+                                        numberDisplayed: 5,
+                                        nSelectedText: ' - выбрано',
+                                        allSelectedText: 'Выбраны все напитки',
+                                        buttonClass: 'btn btn-secondary',
+                                        buttonWidth: '100%',
+                                        templates: {
+                                            li: '<li><a class="dropdown-item" tabindex="0"><label style="padding-left: 10px; width: 100%"></label></a></li>'
+                                        }
+                                    });
+								</script>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
 
-		<div class="row justify-content-center">
-			<div class="col-lg-7 w-100 text-right">
-				<button id="one-more-btn" type="submit" class="btn btn-secondary" onclick="addVisitor()">
-					<i class="fa fa-user-plus pr-2"></i>
-					Добавить гостя
-				</button>
-				<button id="send-btn" type="submit" class="btn btn-secondary" onclick="sendVisitors()">
-					<i class="fa fa-send-o pr-2"></i>
-					Отправить
-				</button>
-			</div>
-		</div>
-
-		<div class="row justify-content-center">
-			<div class="col-lg-7">
-				<div id="will-go-response" class="alert alert-success hide" role="alert">
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<label for="note" class="form-control-label">Дополнительная информация:</label>
+							<textarea class="form-control w-100" type="text" id="note" rows="3" name="note"></textarea>
+						</div>
+					</div>
 				</div>
 
-				<div id="wont-go-response" class="alert alert-warning hide" role="alert">
+				<div class="row justify-content-center text-right mb-3">
+					<div class="col-12 text-right">
+						<button id="one-more-btn" type="submit" class="btn btn-secondary" onclick="addVisitor()">
+							<i class="fa fa-user-plus pr-2"></i>
+							Добавить гостя
+						</button>
+						<button id="send-btn" type="submit" class="btn btn-secondary" onclick="sendVisitors()">
+							<i class="fa fa-send-o pr-2"></i>
+							Отправить
+						</button>
+					</div>
 				</div>
 
-				<div id="error-response" class="alert alert-danger hide" role="alert">
+				<div class="row justify-content-center">
+					<div class="col-12">
+						<div id="will-go-response" class="alert alert-success hide" role="alert">
+						</div>
+
+						<div id="wont-go-response" class="alert alert-warning hide" role="alert">
+						</div>
+
+						<div id="error-response" class="alert alert-danger hide" role="alert">
+						</div>
+					</div>
 				</div>
+
+				<table id="will-go-table" class="table hide">
+					<thead>
+					<tr>
+						<th>Имя</th>
+						<th>Трансфер</th>
+						<th>События</th>
+						<th class="hidden-sm-down">Напитки</th>
+						<th class="hidden-sm-down">Основное блюдо</th>
+						<th class="hidden-sm-down">Доп. инфо</th>
+					</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</form>
 
-	<table id="will-go-table" class="table hide">
-		<thead>
-		<tr>
-			<th>Имя</th>
-			<th>Трансфер</th>
-			<th>События</th>
-			<th class="hidden-sm-down">Напитки</th>
-			<th class="hidden-sm-down">Основное блюдо</th>
-			<th class="hidden-sm-down">Доп. инфо</th>
-		</tr>
-		</thead>
-		<tbody>
-		</tbody>
-	</table>
 </div>
 
 </body>

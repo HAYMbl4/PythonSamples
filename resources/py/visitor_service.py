@@ -43,6 +43,6 @@ def send_success_response(visitors):
 
 
 def send_error_responce(exp):
-    result = {"success": "false", "message": "Возникла ошибка при добавлении гостей в список!", "exp": exp}
+    result = {"success": "false", "message": "Возникла ошибка при добавлении гостей в список!", "exp": str(exp)}
     print("Content-Type: application/json\n\n")
     print(json.dumps(result))
