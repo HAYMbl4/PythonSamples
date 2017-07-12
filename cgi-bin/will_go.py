@@ -4,6 +4,7 @@ import json
 from os.path import isfile
 
 from resources.py import backup
+from resources.py import email_service
 from resources.py import visitor_service
 
 VISITORS_FILE_PATH = "visitor/visitors.json"
@@ -26,7 +27,9 @@ if has_visitors_file and created_backup and created_request_backup:
     try:
         visitor_service.add_visitors(new_visitors, VISITORS_FILE_PATH)
         visitor_service.send_success_response(new_visitors)
+        email_service.notify_about_new_visitors(new_visitors)
     except Exception as e:
         visitor_service.send_error_responce(e)
+        email_service.notify_about_error(e)
 else:
     visitor_service.send_error_responce("Не удалось сделать резевную копию данных")

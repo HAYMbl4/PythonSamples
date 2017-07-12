@@ -2,6 +2,7 @@ import json
 from os.path import isfile
 
 from resources.py import log
+from resources.py.email_service import notify_about_error
 
 
 def create_file(name, content):
@@ -12,6 +13,7 @@ def create_file(name, content):
             return True
     except Exception as e:
         log.error("Не удалось создать файл: '%s'.\n Ex: %s" % (name, str(e)))
+        notify_about_error(e)
         return False
 
 
@@ -25,6 +27,7 @@ def create_backup(file_name, backup_file):
             return True
     except Exception as e:
         log.error("Не удалось создать бэкап для файла: '%s'.\n Ex: %s" % (file_name, str(e)))
+        notify_about_error(e)
         return False
 
 
@@ -40,4 +43,5 @@ def create_request_backup(backup_file, request):
                 return True
     except Exception as e:
         log.error("Не удалось создать бэкап для request: \n '%s'.\n Ex: %s" % (request, str(e)))
+        notify_about_error(e)
         return False

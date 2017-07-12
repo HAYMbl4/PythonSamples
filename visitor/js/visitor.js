@@ -30,14 +30,14 @@ function saveAndSendWillGoInfo() {
         dataType: "json",
         success: function (data) {
             if (toBoolean(data["success"])) {
-                if (data["positive_desc"] !== null) {
+                if (data["positive_desc"] !== "") {
                     get("will-go-response").text(data["positive_desc"]);
                     get("will-go-response").removeClass("hide");
                     setTimeout(function () {
                         get("will-go-response").addClass("hide");
                     }, 5000);
                 }
-                if (data["negative_desc"] !== null) {
+                if (data["negative_desc"] !== "") {
                     get("wont-go-response").text(data["negative_desc"]);
                     get("wont-go-response").removeClass("hide");
                     setTimeout(function () {
